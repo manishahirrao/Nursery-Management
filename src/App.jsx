@@ -1,7 +1,6 @@
-import { useState } from "react";
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Home from "./Components/Home";
@@ -11,10 +10,11 @@ import Cartitem from "./Pages/Cartitem";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Shop from "./Pages/Shop";
+import Product from "./Pages/Product";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <div className="">
         <Header />
         <Routes>
@@ -25,10 +25,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/product/:id" element={<Product />} />
         </Routes>
         <Footer />
       </div>
-    </>
+    </BrowserRouter>
   );
 }
 

@@ -21,9 +21,9 @@ const Footer = () => {
         </div>
         <div className="flex flex-col justify-center">
           <p className="text-2xl font-bold py-1">Contact Us</p>
-          <span>pune city</span>
-          <span>+91-365952</span>
-          <span>likoa23@gmail.com</span>
+          <span>123 Plant Street, Garden City Green Valley, GV 12345</span>
+          <span>+1 (555) 123-4567</span>
+          <span>contact@nursery.com</span>
         </div>
       </div>
     </>

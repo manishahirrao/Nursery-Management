@@ -56,24 +56,43 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <ul className="hidden md:flex items-center gap-5 text-xl font-semibold">
-          <NavLink to={"/"} className="hover:text-green-600 transition-colors">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              `hover:text-green-600 transition-colors w-full py-1  ${
+                isActive ? "border-b-4 border-green-700" : ""
+              }`
+            }
+          >
             Home
           </NavLink>
           <NavLink
-            to={"/categories"}
-            className="hover:text-green-600 transition-colors"
+            to="/categories"
+            className={({ isActive }) =>
+              `hover:text-green-600 transition-colors w-full py-1 ${
+                isActive ? "border-b-4 border-green-700" : ""
+              }`
+            }
           >
             Categories
           </NavLink>
           <NavLink
-            to={"/contact"}
-            className="hover:text-green-600 transition-colors"
+            to="/contact"
+            className={({ isActive }) =>
+              `hover:text-green-600 transition-colors w-full py-1 ${
+                isActive ? "border-b-4 border-green-700" : ""
+              }`
+            }
           >
             Contact
           </NavLink>
           <NavLink
-            to={"/shop"}
-            className="hover:text-green-600 transition-colors"
+            to="/shop"
+            className={({ isActive }) =>
+              `hover:text-green-600 transition-colors w-full py-1 ${
+                isActive ? "border-b-4 border-green-700" : ""
+              }`
+            }
           >
             Shop
           </NavLink>
@@ -131,29 +150,45 @@ const Header = () => {
             </div>
             <ul className="flex flex-col px-4 py-2">
               <NavLink
-                to={"/"}
-                className="py-2 hover:text-green-600 transition-colors"
+                to="/"
+                className={({ isActive }) =>
+                  `py-2 hover:text-green-600 transition-colors px-2 py-1 ${
+                    isActive ? "border-b-4 border-green-700" : ""
+                  }`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 Home
               </NavLink>
               <NavLink
-                to={"/categories"}
-                className="py-2 hover:text-green-600 transition-colors"
+                to="/categories"
+                className={({ isActive }) =>
+                  `py-2 hover:text-green-600 transition-colors px-2 py-1 ${
+                    isActive ? "border-b-4 border-green-700" : ""
+                  }`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 Categories
               </NavLink>
               <NavLink
-                to={"/contact"}
-                className="py-2 hover:text-green-600 transition-colors"
+                to="/contact"
+                className={({ isActive }) =>
+                  `py-2 hover:text-green-600 transition-colors px-2 py-1 ${
+                    isActive ? "border-b-4 border-green-700" : ""
+                  }`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
               </NavLink>
               <NavLink
-                to={"/shop"}
-                className="py-2 hover:text-green-600 transition-colors"
+                to="/shop"
+                className={({ isActive }) =>
+                  `py-2 hover:text-green-600 transition-colors px-2 py-1 ${
+                    isActive ? "border-b-4 border-green-700" : ""
+                  }`
+                }
                 onClick={() => setIsMenuOpen(false)}
               >
                 Shop
@@ -184,7 +219,11 @@ const Header = () => {
               ) : (
                 <Link
                   to={"./Login"}
-                  className="py-2 hover:text-green-600 transition-colors"
+                  className={({ isActive }) =>
+                    `py-2 hover:text-green-600 transition-colors px-2 py-1 ${
+                      isActive ? "border-b-4 border-green-700" : ""
+                    }`
+                  }
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Login
