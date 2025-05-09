@@ -97,6 +97,18 @@ const Header = () => {
             Shop
           </NavLink>
 
+          {/* Admin Link */}
+          <NavLink
+            to="/admin"
+            className={({ isActive }) =>
+              `hover:text-green-600 transition-colors w-full py-1 ${
+                isActive ? "border-b-4 border-green-700" : ""
+              }`
+            }
+          >
+            Admin
+          </NavLink>
+
           {/* icons */}
           <div className="flex items-center gap-4">
             <Link to={"./Cartitem"}>
@@ -192,6 +204,17 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Shop
+              </NavLink>
+              <NavLink
+                to="/admin"
+                className={({ isActive }) =>
+                  `py-2 hover:text-green-600 transition-colors px-2 py-1 ${
+                    isActive ? "border-b-4 border-green-700" : ""
+                  }`
+                }
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Admin
               </NavLink>
               {isLoggedIn ? (
                 <>

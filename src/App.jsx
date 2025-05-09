@@ -11,6 +11,9 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Shop from "./Pages/Shop";
 import Product from "./Pages/Product";
+import AdminPage from "./Admin/AdminPage";
+import AdminLogin from "./Admin/AdminLogin";
+import ProtectedRoute from "./Admin/ProtectedRoute";
 
 function App() {
   return (
@@ -26,6 +29,15 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="/product/:id" element={<Product />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
         <Footer />
       </div>
