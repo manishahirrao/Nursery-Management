@@ -11,6 +11,8 @@ import {
   Alert,
   Checkbox,
   FormControlLabel,
+  Box,
+  Grid,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
@@ -32,6 +34,7 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,39 +42,46 @@ const Register = () => {
       ...prev,
       [name]: value,
     }));
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
   };
 
   const validateForm = () => {
-    if (
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.email ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
-      setError("Please fill in all fields");
-      return false;
+    const newErrors = {};
+    if (!formData.firstName) newErrors.firstName = "First name is required";
+    if (!formData.lastName) newErrors.lastName = "Last name is required";
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     }
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return false;
-    }
-    if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters long");
-      return false;
+      newErrors.confirmPassword = "Passwords do not match";
     }
     if (!agreeToTerms) {
-      setError("Please agree to the terms and conditions");
-      return false;
+      newErrors.agreeToTerms = "Please agree to the terms and conditions";
     }
-    return true;
+    return newErrors;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Add your registration logic here
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length === 0) {
+      // Handle registration logic here
       navigate("/login");
+    } else {
+      setErrors(newErrors);
     }
   };
 
@@ -99,28 +109,32 @@ const Register = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <TextField
-              fullWidth
-              label="First Name"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-              variant="outlined"
-              size="small"
-            />
-            <TextField
-              fullWidth
-              label="Last Name"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              required
-              variant="outlined"
-              size="small"
-            />
-          </div>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="First Name"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                error={!!errors.firstName}
+                helperText={errors.firstName}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label="Last Name"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                error={!!errors.lastName}
+                helperText={errors.lastName}
+                required
+              />
+            </Grid>
+          </Grid>
 
           <TextField
             fullWidth
@@ -129,9 +143,9 @@ const Register = () => {
             type="email"
             value={formData.email}
             onChange={handleChange}
+            error={!!errors.email}
+            helperText={errors.email}
             required
-            variant="outlined"
-            size="small"
           />
 
           <TextField
@@ -141,9 +155,9 @@ const Register = () => {
             type={showPassword ? "text" : "password"}
             value={formData.password}
             onChange={handleChange}
+            error={!!errors.password}
+            helperText={errors.password}
             required
-            variant="outlined"
-            size="small"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -165,9 +179,9 @@ const Register = () => {
             type={showConfirmPassword ? "text" : "password"}
             value={formData.confirmPassword}
             onChange={handleChange}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword}
             required
-            variant="outlined"
-            size="small"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

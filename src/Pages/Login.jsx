@@ -8,13 +8,14 @@ import {
   Divider,
   IconButton,
   InputAdornment,
-  Alert,
+  Box,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
+import {
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+  Google as GoogleIcon,
+} from "@mui/icons-material";
 import Title from "./Title";
 
 const Login = () => {
@@ -27,10 +28,11 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -60,9 +62,9 @@ const Login = () => {
     }
   };
 
-  const handleSocialLogin = (provider) => {
-    // Handle social login logic here
-    console.log(`Logging in with ${provider}`);
+  const handleGoogleLogin = () => {
+    // Handle Google login logic here
+    console.log("Google login attempt");
   };
 
   const handleSignUpClick = () => {
@@ -82,9 +84,13 @@ const Login = () => {
         </Typography>
 
         {error && (
-          <Alert severity="error" className="mb-4">
+          <Typography
+            variant="body2"
+            color="error"
+            className="text-center mb-4"
+          >
             {error}
-          </Alert>
+          </Typography>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -117,7 +123,7 @@ const Login = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     edge="end"
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -149,26 +155,15 @@ const Login = () => {
           </Typography>
         </Divider>
 
-        <div className="space-y-3">
-          <Button
-            fullWidth
-            variant="outlined"
-            startIcon={<GoogleIcon />}
-            onClick={() => handleSocialLogin("Google")}
-            className="!border-gray-300 hover:!bg-gray-50"
-          >
-            Continue with Google
-          </Button>
-          <Button
-            fullWidth
-            variant="outlined"
-            startIcon={<FacebookIcon />}
-            onClick={() => handleSocialLogin("Facebook")}
-            className="!border-gray-300 hover:!bg-gray-50"
-          >
-            Continue with Facebook
-          </Button>
-        </div>
+        <Button
+          fullWidth
+          variant="outlined"
+          startIcon={<GoogleIcon />}
+          onClick={handleGoogleLogin}
+          className="!border-gray-300 hover:!bg-gray-50"
+        >
+          Continue with Google
+        </Button>
 
         <div className="mt-6 text-center">
           <Typography variant="body2" color="text.secondary">
