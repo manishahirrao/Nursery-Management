@@ -78,7 +78,33 @@ const Register = () => {
     e.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length === 0) {
-      // Handle registration logic here
+      // Store user data in localStorage
+      const userData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        password: formData.password, // Note: In a real app, never store plain passwords
+        registeredAt: new Date().toISOString(),
+      };
+
+      // Get existing users or initialize empty array
+      const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+
+      // Check if email already exists
+      if (existingUsers.some((user) => user.email === formData.email)) {
+        setError("An account with this email already exists");
+        return;
+      }
+
+      // Add new user
+      existingUsers.push(userData);
+      localStorage.setItem("users", JSON.stringify(existingUsers));
+
+      // Show success message
+      setError("");
+      alert("Registration successful! Please login.");
+
+      // Navigate to login page
       navigate("/login");
     } else {
       setErrors(newErrors);

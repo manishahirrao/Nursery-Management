@@ -45,15 +45,19 @@ const Login = () => {
       return;
     }
 
-    // For demo purposes, we'll use a simple validation
-    // In a real app, this would be an API call to your backend
-    if (
-      formData.email === "demo@example.com" &&
-      formData.password === "password"
-    ) {
+    // Get registered users from localStorage
+    const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+    // Find user with matching email and password
+    const user = users.find(
+      (u) => u.email === formData.email && u.password === formData.password
+    );
+
+    if (user) {
       // Set user data in localStorage
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userName", "Demo User");
+      localStorage.setItem("userName", `${user.firstName} ${user.lastName}`);
+      localStorage.setItem("userEmail", user.email);
 
       // Navigate to home page
       navigate("/");
