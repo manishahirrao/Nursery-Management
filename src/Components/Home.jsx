@@ -1,8 +1,8 @@
 import React from "react";
-import bg from "../assets/bg.jpeg";
+import back from "../assets/back.jpeg";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-import Title from "../Pages/Title";
+import Title from "../pages/Title";
 import { useNavigate } from "react-router-dom";
 import {
   FaTruck,
@@ -137,7 +137,7 @@ const Home = () => {
       <div className="relative">
         <img
           className="w-full h-[50vh] md:h-[700px] object-cover"
-          src={bg}
+          src={back}
           alt="Background"
         />
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>

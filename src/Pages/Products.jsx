@@ -31,6 +31,7 @@ import {
   Tooltip,
   Fade,
   Zoom,
+  ListItemText,
 } from "@mui/material";
 import {
   Search as SearchIcon,
@@ -179,6 +180,7 @@ const categories = [
 const Products = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("lg"));
   const [sortBy, setSortBy] = useState("featured");
   const [priceRange, setPriceRange] = useState([0, 5000]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -393,153 +395,148 @@ const Products = () => {
   );
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      {/* Header Section */}
-      <Box sx={{ mb: 4, textAlign: "center" }}>
-        <Typography
-          variant="h3"
-          component="h1"
-          gutterBottom
-          sx={{ fontWeight: "bold", color: theme.palette.primary.main }}
+    <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+      <Container maxWidth="xl" sx={{ py: 4 }}>
+        {/* Header Section */}
+        <Paper
+          elevation={0}
+          sx={{
+            p: { xs: 2, sm: 3 },
+            mb: 3,
+            borderRadius: 2,
+            bgcolor: "background.paper",
+          }}
         >
-          Plant Shop
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 3 }}>
-          Discover our collection of beautiful plants for your home and garden
-        </Typography>
-      </Box>
+          <Grid container spacing={2} alignItems="center">
+            {/* Search Bar */}
+            <Grid item xs={12} md={4}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                placeholder="Search plants..."
+                value={searchQuery}
+                onChange={handleSearchChange}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+                size={isMobile ? "small" : "medium"}
+              />
+            </Grid>
 
-      {/* Combined Search, Sort, and Filter Bar */}
-      <Paper sx={{ p: 2, mb: 3 }}>
-        <Grid container spacing={2} alignItems="center">
-          {/* Search */}
-          <Grid item xs={12} md={4}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Search plants..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
+            {/* Sort and Filter Controls */}
+            <Grid item xs={12} md={8}>
+              <Grid container spacing={2} alignItems="center">
+                <Grid item xs={12} sm={6} md={4}>
+                  <FormControl fullWidth size={isMobile ? "small" : "medium"}>
+                    <InputLabel>Sort By</InputLabel>
+                    <Select
+                      value={sortBy}
+                      onChange={handleSortChange}
+                      label="Sort By"
+                    >
+                      <MenuItem value="featured">Featured</MenuItem>
+                      <MenuItem value="price-low">Price: Low to High</MenuItem>
+                      <MenuItem value="price-high">Price: High to Low</MenuItem>
+                      <MenuItem value="rating">Rating</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={6} md={4}>
+                  <FormControl fullWidth size={isMobile ? "small" : "medium"}>
+                    <InputLabel>Category</InputLabel>
+                    <Select
+                      multiple
+                      value={selectedCategories}
+                      onChange={handleCategoryChange}
+                      label="Category"
+                      renderValue={(selected) => (
+                        <Box
+                          sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
+                          {selected.map((value) => (
+                            <Chip
+                              key={value}
+                              label={value}
+                              size="small"
+                              onDelete={() =>
+                                setSelectedCategories(
+                                  selectedCategories.filter(
+                                    (cat) => cat !== value
+                                  )
+                                )
+                              }
+                            />
+                          ))}
+                        </Box>
+                      )}
+                    >
+                      {categories.map((category) => (
+                        <MenuItem key={category} value={category}>
+                          <Checkbox
+                            checked={selectedCategories.includes(category)}
+                          />
+                          <ListItemText primary={category} />
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item xs={12} sm={6} md={4}>
+                  <FormControl fullWidth size={isMobile ? "small" : "medium"}>
+                    <InputLabel>Price Range</InputLabel>
+                    <Select
+                      value={priceRange}
+                      onChange={(e) => setPriceRange(e.target.value)}
+                      label="Price Range"
+                    >
+                      <MenuItem value={[0, 5000]}>All Prices</MenuItem>
+                      <MenuItem value={[0, 500]}>Under ₹500</MenuItem>
+                      <MenuItem value={[500, 1000]}>₹500 - ₹1000</MenuItem>
+                      <MenuItem value={[1000, 2000]}>₹1000 - ₹2000</MenuItem>
+                      <MenuItem value={[2000, 5000]}>Above ₹2000</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            {/* Active Filters */}
+            {renderFilterChips()}
+          </Grid>
+        </Paper>
+
+        {/* Products Grid */}
+        <Grid container spacing={3}>
+          {filteredProducts.map((product) => (
+            <Grid
+              item
+              key={product.id}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
               }}
-            />
-          </Grid>
-
-          {/* Sort and Filter Controls */}
-          <Grid item xs={12} md={8}>
-            <Grid container spacing={2} alignItems="center">
-              {/* Sort */}
-              <Grid item xs={12} sm={4}>
-                <FormControl fullWidth size="small">
-                  <InputLabel>Sort By</InputLabel>
-                  <Select
-                    value={sortBy}
-                    label="Sort By"
-                    onChange={handleSortChange}
-                  >
-                    <MenuItem value="featured">Featured</MenuItem>
-                    <MenuItem value="price-low-high">
-                      Price: Low to High
-                    </MenuItem>
-                    <MenuItem value="price-high-low">
-                      Price: High to Low
-                    </MenuItem>
-                    <MenuItem value="rating">Rating</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              {/* Category Filter */}
-              <Grid item xs={12} sm={4}>
-                <FormControl fullWidth size="small">
-                  <InputLabel>Category</InputLabel>
-                  <Select
-                    multiple
-                    value={selectedCategories}
-                    label="Category"
-                    onChange={(e) => setSelectedCategories(e.target.value)}
-                    renderValue={(selected) => (
-                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                        {selected.map((value) => (
-                          <Chip key={value} label={value} size="small" />
-                        ))}
-                      </Box>
-                    )}
-                  >
-                    {categories.map((category) => (
-                      <MenuItem key={category} value={category}>
-                        <Checkbox
-                          checked={selectedCategories.includes(category)}
-                        />
-                        <Typography variant="body2">
-                          {category} (
-                          {
-                            products.filter((p) => p.category === category)
-                              .length
-                          }
-                          )
-                        </Typography>
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              {/* Price Range Filter */}
-              <Grid item xs={12} sm={4}>
-                <FormControl fullWidth size="small">
-                  <InputLabel>Price Range</InputLabel>
-                  <Select
-                    value={`${priceRange[0]}-${priceRange[1]}`}
-                    label="Price Range"
-                    onChange={(e) => {
-                      const [min, max] = e.target.value.split("-").map(Number);
-                      setPriceRange([min, max]);
-                    }}
-                  >
-                    <MenuItem value="0-5000">All Prices</MenuItem>
-                    <MenuItem value="0-1000">Under ₹1,000</MenuItem>
-                    <MenuItem value="1000-2000">₹1,000 - ₹2,000</MenuItem>
-                    <MenuItem value="2000-3000">₹2,000 - ₹3,000</MenuItem>
-                    <MenuItem value="3000-5000">Above ₹3,000</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          {/* Active Filters */}
-          {(selectedCategories.length > 0 ||
-            searchQuery ||
-            priceRange[0] > 0 ||
-            priceRange[1] < 5000) && (
-            <Grid item xs={12}>
-              {renderFilterChips()}
-            </Grid>
-          )}
-        </Grid>
-      </Paper>
-
-      {/* Products Grid */}
-      <Grid container spacing={3}>
-        {filteredProducts.map((product) => (
-          <Grid item key={product.id} xs={12} sm={6} md={4}>
-            <Zoom in={true}>
+            >
               <Card
                 sx={{
                   height: "100%",
                   display: "flex",
                   flexDirection: "column",
                   position: "relative",
-                  transition: "transform 0.2s, box-shadow 0.2s",
+                  transition:
+                    "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
                   "&:hover": {
-                    transform: "translateY(-8px)",
-                    boxShadow: theme.shadows[8],
+                    transform: "translateY(-4px)",
+                    boxShadow: theme.shadows[4],
                   },
                 }}
                 onMouseEnter={() => setHoveredProduct(product.id)}
@@ -548,16 +545,12 @@ const Products = () => {
                 <Box sx={{ position: "relative" }}>
                   <CardMedia
                     component="img"
-                    height="250"
+                    height={isMobile ? 200 : 250}
                     image={product.image}
                     alt={product.name}
                     sx={{
                       objectFit: "cover",
-                      transition: "transform 0.3s",
-                      transform:
-                        hoveredProduct === product.id
-                          ? "scale(1.05)"
-                          : "scale(1)",
+                      bgcolor: "grey.100",
                     }}
                   />
                   <IconButton
@@ -565,8 +558,10 @@ const Products = () => {
                       position: "absolute",
                       top: 8,
                       right: 8,
-                      bgcolor: "rgba(255, 255, 255, 0.9)",
-                      "&:hover": { bgcolor: "rgba(255, 255, 255, 1)" },
+                      bgcolor: "background.paper",
+                      "&:hover": {
+                        bgcolor: "background.paper",
+                      },
                     }}
                     onClick={() => toggleFavorite(product.id)}
                   >
@@ -576,121 +571,132 @@ const Products = () => {
                       <FavoriteBorderIcon />
                     )}
                   </IconButton>
-                  {product.inStock && (
-                    <Chip
-                      label="In Stock"
-                      color="success"
-                      size="small"
+                  {!product.inStock && (
+                    <Box
                       sx={{
                         position: "absolute",
-                        top: 8,
-                        left: 8,
-                        bgcolor: "rgba(46, 125, 50, 0.9)",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        bgcolor: "rgba(0, 0, 0, 0.5)",
                         color: "white",
                       }}
-                    />
+                    >
+                      <Typography variant="h6">Out of Stock</Typography>
+                    </Box>
                   )}
                 </Box>
-                <CardContent
-                  sx={{
-                    flexGrow: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
+
+                <CardContent sx={{ flexGrow: 1, p: { xs: 2, sm: 3 } }}>
                   <Typography
                     gutterBottom
                     variant="h6"
-                    component={Link}
-                    to={`/product/${product.id}`}
+                    component="h3"
                     sx={{
-                      textDecoration: "none",
-                      color: "inherit",
-                      "&:hover": { color: theme.palette.primary.main },
+                      fontSize: { xs: "1rem", sm: "1.1rem" },
+                      fontWeight: "bold",
+                      mb: 1,
                     }}
                   >
                     {product.name}
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      mb: 1,
+                      gap: 1,
+                    }}
                   >
-                    {product.description}
-                  </Typography>
-                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
                     <Rating
                       value={product.rating}
                       precision={0.5}
+                      size={isMobile ? "small" : "medium"}
                       readOnly
-                      size="small"
-                      icon={<StarIcon fontSize="inherit" />}
                     />
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      sx={{ ml: 1 }}
+                      sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
                     >
                       ({product.rating})
                     </Typography>
                   </Box>
+
                   <Typography
-                    variant="h6"
-                    color="primary"
-                    sx={{ mt: "auto", mb: 1 }}
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      mb: 2,
+                      fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                      display: "-webkit-box",
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                      overflow: "hidden",
+                    }}
                   >
-                    ₹{product.price}
+                    {product.description}
                   </Typography>
-                  <Box sx={{ display: "flex", gap: 1, mt: "auto" }}>
+
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      mt: "auto",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      color="primary"
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: { xs: "1rem", sm: "1.25rem" },
+                      }}
+                    >
+                      ₹{product.price}
+                    </Typography>
                     <Button
                       variant="contained"
-                      fullWidth
+                      color="primary"
+                      size={isMobile ? "small" : "medium"}
+                      disabled={!product.inStock}
                       startIcon={<CartIcon />}
-                      component={Link}
-                      to={`/product/${product.id}`}
                     >
                       Add to Cart
                     </Button>
                   </Box>
                 </CardContent>
               </Card>
-            </Zoom>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* No Results Message */}
-      {filteredProducts.length === 0 && (
-        <Paper sx={{ p: 4, textAlign: "center", mt: 2 }}>
-          <Typography variant="h6" gutterBottom>
-            No plants found matching your criteria
-          </Typography>
-          <Typography variant="body1" color="text.secondary" gutterBottom>
-            Try adjusting your filters or search terms
-          </Typography>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              setSelectedCategories([]);
-              setSearchQuery("");
-              setPriceRange([0, 5000]);
-            }}
-            sx={{ mt: 2 }}
-          >
-            Clear All Filters
-          </Button>
-        </Paper>
-      )}
-
-      {/* Mobile Filter Drawer - Keep this for mobile view */}
-      <Drawer
-        anchor="right"
-        open={filterDrawerOpen}
-        onClose={() => setFilterDrawerOpen(false)}
-      >
-        <Box sx={{ width: 280, p: 2 }}>{renderFilters()}</Box>
-      </Drawer>
-    </Container>
+            </Grid>
+          ))}
+          {filteredProducts.length === 0 && (
+            <Grid item xs={12}>
+              <Paper
+                sx={{
+                  p: 4,
+                  textAlign: "center",
+                  bgcolor: "background.paper",
+                  borderRadius: 2,
+                }}
+              >
+                <Typography variant="h6" color="text.secondary" gutterBottom>
+                  No products found
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Try adjusting your filters or search query
+                </Typography>
+              </Paper>
+            </Grid>
+          )}
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 

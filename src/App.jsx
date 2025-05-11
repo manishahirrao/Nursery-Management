@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
-import Navbar from "./components/Navbar";
+import Navbar from "./Components/Navbar";
 import React from "react";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -18,6 +18,7 @@ import Shop from "./Pages/Shop";
 import AdminPage from "./Admin/AdminPage";
 import AdminLogin from "./Admin/AdminLogin";
 import ProtectedRoute from "./Admin/ProtectedRoute";
+import Orders from "./Pages/Orders";
 
 const theme = createTheme({
   palette: {
@@ -51,6 +52,7 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/cartitem" element={<Cartitem />} />
               <Route path="/shop" element={<Shop />} />
+              <Route path="/orders" element={<Orders />} />
               <Route path="/admin-login" element={<AdminLogin />} />
               <Route
                 path="/admin"

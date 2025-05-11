@@ -1,7 +1,19 @@
 import React from "react";
-import Title from "./Title";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  CardMedia,
+  Button,
+  Stack,
+  useTheme,
+  useMediaQuery,
+  Zoom,
+  Paper,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import indoor from "../assets/indoor.jpeg";
 import outdoor from "../assets/outdoor.jpeg";
@@ -12,6 +24,9 @@ import bonsai from "../assets/bonsai.jpeg";
 
 const Categories = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isTablet = useMediaQuery(theme.breakpoints.down("md"));
 
   const categories = [
     {
@@ -63,39 +78,122 @@ const Categories = () => {
   };
 
   return (
-    <div className="container mx-auto px-20 py-8">
-      <Title text1="Plant Categories" />
+    <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
+      <Container
+        maxWidth="lg"
+        sx={{ py: { xs: 4, sm: 6, md: 8 }, px: { xs: 2, sm: 3, md: 4 } }}
+      >
+        {/* Header */}
+        <Typography
+          variant={isMobile ? "h4" : isTablet ? "h3" : "h2"}
+          component="h1"
+          align="center"
+          gutterBottom
+          sx={{
+            fontWeight: "bold",
+            mb: { xs: 3, sm: 4, md: 6 },
+            fontSize: { xs: "1.75rem", sm: "2.25rem", md: "2.75rem" },
+            color: "text.primary",
+          }}
+        >
+          Plant Categories
+        </Typography>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        {categories.map((category) => (
-          <div
-            key={category.id}
-            className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-          >
-            <div className="relative h-64">
-              <img
-                src={category.image}
-                alt={category.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2">{category.title}</h3>
-              <p className="text-gray-600">{category.description}</p>
-              <Stack className="mt-8" spacing={2} direction="row">
-                <Button
-                  variant="contained"
-                  className="!bg-green-600 hover:!bg-green-700 text-white"
-                  onClick={() => handleExplore(category.category)}
+        {/* Categories Grid */}
+        <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+          {categories.map((category, index) => (
+            <Grid item key={category.id} xs={12} sm={6} md={4}>
+              <Zoom
+                in
+                timeout={500}
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <Card
+                  sx={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    transition: "all 0.2s ease-in-out",
+                    borderRadius: 2,
+                    overflow: "hidden",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                      boxShadow: theme.shadows[4],
+                    },
+                  }}
                 >
-                  Explore
-                </Button>
-              </Stack>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+                  <CardMedia
+                    component="img"
+                    height={isMobile ? 200 : isTablet ? 250 : 300}
+                    image={category.image}
+                    alt={category.title}
+                    sx={{
+                      objectFit: "cover",
+                      bgcolor: "grey.100",
+                    }}
+                  />
+                  <CardContent
+                    sx={{
+                      flexGrow: 1,
+                      p: { xs: 2, sm: 3 },
+                      bgcolor: "background.paper",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Typography
+                      gutterBottom
+                      variant={isMobile ? "h6" : "h5"}
+                      component="h2"
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: { xs: "1.1rem", sm: "1.25rem", md: "1.5rem" },
+                        mb: { xs: 1, sm: 2 },
+                      }}
+                    >
+                      {category.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        mb: { xs: 2, sm: 3 },
+                        fontSize: { xs: "0.875rem", sm: "1rem" },
+                        flexGrow: 1,
+                      }}
+                    >
+                      {category.description}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      size={isMobile ? "medium" : "large"}
+                      onClick={() => handleExplore(category.category)}
+                      sx={{
+                        alignSelf: "flex-start",
+                        px: { xs: 3, sm: 4 },
+                        py: { xs: 1, sm: 1.5 },
+                        fontSize: { xs: "0.875rem", sm: "1rem" },
+                        borderRadius: 2,
+                        textTransform: "none",
+                        fontWeight: "bold",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                          boxShadow: theme.shadows[2],
+                        },
+                        transition: "all 0.2s ease-in-out",
+                      }}
+                    >
+                      Explore
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Zoom>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 
