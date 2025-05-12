@@ -2,23 +2,23 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
 import Navbar from "./Components/Navbar.jsx";
 import React from "react";
-import Home from "./pages/Home";
-import Products from "./pages/Products";
-import ProductDetail from "./pages/ProductDetail";
-import Cart from "./pages/Cart";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Home from "./pages/Home.jsx";
+import Products from "./pages/Products.jsx";
+import ProductDetail from "./pages/ProductDetail.jsx";
+import Cart from "./pages/Cart.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
 import "./App.css";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
-import Categories from "./Pages/Categories";
-import Contact from "./Pages/Contact";
-import Cartitem from "./Pages/Cartitem";
-import Shop from "./Pages/Shop";
+import Categories from "./pages/categories.jsx";
+import Contact from "./pages/contact.jsx";
+import Cartitem from "./pages/cartitem.jsx";
+import Shop from "./pages/shop.jsx";
 import AdminPage from "./Admin/AdminPage";
 import AdminLogin from "./Admin/AdminLogin";
 import ProtectedRoute from "./Admin/ProtectedRoute";
-import Orders from "./Pages/Orders";
+import Orders from "./pages/orders.jsx";
 
 const theme = createTheme({
   palette: {
