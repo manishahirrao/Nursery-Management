@@ -9,15 +9,15 @@ import Cart from "./Pages/Cart.jsx";
 import Login from "./Pages/Login.jsx";
 import Register from "./Pages/Register.jsx";
 import "./App.css";
-import Header from "./Components/Header";
-import Footer from "./Components/Footer";
+import Header from "./Components/Header.jsx";
+import Footer from "./Components/Footer.jsx";
 import Categories from "./Pages/Categories.jsx";
 import Contact from "./Pages/Contact.jsx";
-import CartItem from "./Pages/CartItem.jsx";
+import Cartitem from "./Pages/Cartitem.jsx";
 import Shop from "./Pages/Shop.jsx";
-import AdminPage from "./Admin/AdminPage";
-import AdminLogin from "./Admin/AdminLogin";
-import ProtectedRoute from "./Admin/ProtectedRoute";
+import AdminPage from "./Admin/AdminPage.jsx";
+import AdminLogin from "./Admin/AdminLogin.jsx";
+import ProtectedRoute from "./Admin/ProtectedRoute.jsx";
 import Orders from "./Pages/Orders.jsx";
 
 const theme = createTheme({
