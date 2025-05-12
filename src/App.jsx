@@ -11,14 +11,14 @@ import Register from "./pages/Register.jsx";
 import "./App.css";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
-import Categories from "./pages/categories.jsx";
-import Contact from "./pages/contact.jsx";
-import Cartitem from "./pages/cartitem.jsx";
-import Shop from "./pages/shop.jsx";
+import Categories from "./pages/Categories.jsx";
+import Contact from "./pages/Contact.jsx";
+import CartItem from "./pages/CartItem.jsx";
+import Shop from "./pages/Shop.jsx";
 import AdminPage from "./Admin/AdminPage";
 import AdminLogin from "./Admin/AdminLogin";
 import ProtectedRoute from "./Admin/ProtectedRoute";
-import Orders from "./pages/orders.jsx";
+import Orders from "./pages/Orders.jsx";
 
 const theme = createTheme({
   palette: {
